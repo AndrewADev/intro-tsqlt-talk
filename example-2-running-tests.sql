@@ -32,15 +32,54 @@ go
 
 CREATE PROCEDURE [tSQLtDemo].[Test the answer equals the answer] AS
 BEGIN 
-	EXEC tSQLt.AssertEquals 42, 42
+	EXEC tSQLt.AssertEquals 42, 42, 'The answer is not the answer - gasp!'
 END
+GO
 
+
+
+IF OBJECT_ID('[tSQLtDemo].[Test that empty table is empty]', 'P') IS NOT NULL
+BEGIN 
+	DROP PROCEDURE [tSQLtDemo].[Test that empty table is empty]
+END
+GO
+
+CREATE PROCEDURE [tSQLtDemo].[Test that empty table is empty] AS
+BEGIN
+	CREATE TABLE #Expected ( some_key decimal )
+	
+	EXEC tSQLt.AssertEmptyTable #Expected, 'Empty table is not empty!'
+END
+GO
+
+
+EXEC tSQLt.NewTestClass 'classForDidacticReasons'
+
+IF OBJECT_ID('[classForDidacticReasons].[Test that NULL equals NULL]', 'P') IS NOT NULL
+BEGIN 
+	DROP PROCEDURE [classForDidacticReasons].[Test that NULL equals NULL]
+END
+GO
+
+CREATE PROCEDURE [classForDidacticReasons].[Test that NULL equals NULL] AS
+BEGIN
+	CREATE TABLE #Expected ( some_key decimal )
+	
+	EXEC tSQLt.AssertEquals NULL, NULL, 'NULL is not equal to NULL!'
+END
+GO
+
+
+--EXEC tSQLt.DropClass 'tSQLtDemo'
 
 --
 -- Similar to the test classes, tests are stored in a like-named view
 --
+SET NOCOUNT ON
+
 select * from tSQLt.Tests
 
+SET NOCOUNT OFF
 
 /*
  *

@@ -12,7 +12,6 @@ IF OBJECT_ID('[tSQLtDemo].[Test WorkOrder INSERT triggers TransactionHistory rec
 BEGIN
 	DROP PROCEDURE [tSQLtDemo].[Test WorkOrder INSERT triggers TransactionHistory record]
 END
-
 GO
 
 CREATE PROCEDURE [tSQLtDemo].[Test WorkOrder INSERT triggers TransactionHistory record] AS
@@ -46,5 +45,5 @@ END
 GO
 
 
-exec tSQLt.RunAll
+exec tSQLt.Run '[tSQLtDemo].[Test WorkOrder INSERT triggers TransactionHistory record]'
 
