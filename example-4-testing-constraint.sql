@@ -26,8 +26,6 @@ CREATE PROCEDURE [tSQLtDemo].[Test EndDate cannot be before StartDate] AS BEGIN
 	DECLARE @ErrorMessage VARCHAR(MAX);
 
 	begin try
-		--INSERT INTO Production.WorkOrder (WorkOrderID, ProductID, OrderQty, ScrappedQty, StartDate, EndDate, DueDate, ScrapReasonID, ModifiedDate)
-		--									VALUES (1, NULL, NULL, NULL, '2016-12-31', '2016-09-25' , NULL, NULL, NULL)
 		INSERT INTO Production.WorkOrder (StartDate, EndDate)
 											VALUES ('2016-12-31', '2016-09-25' )
 	end try
@@ -43,9 +41,7 @@ CREATE PROCEDURE [tSQLtDemo].[Test EndDate cannot be before StartDate] AS BEGIN
 		EXEC tSQLt.Fail 'Expected error message containing ''CK_WorkOrder_EndDate'' but got: ',@ErrorMessage,'!';
     END
 
-	-- For debugging - must be within procedure, as tests run in transactions, and so are rolled back at end
-	--Exec tSQLt.LogCapturedOutput @ErrorMessage
-	--select * from tSQLt.CaptureOutputLog
+
 
 END;
 GO

@@ -109,7 +109,7 @@ BEGIN
 	EXEC tSQLt.FakeTable 'Person.EmailAddress'
 
 	INSERT INTO Person.Person (BusinessEntityID, FirstName , EmailPromotion)
-		VALUES (42, 'Kenny', 1)
+		VALUES (42, 'Arthur', 1)
 
 	INSERT INTO Person.EmailAddress (BusinessEntityID, EmailAddress)
 		VALUES (42, 'ex@mple.com')
@@ -130,7 +130,7 @@ BEGIN
 	INSERT INTO #Expected(FirstName, EmailAddress)
 	VALUES ('Kenny', 'ex@mple.com')
 
-	EXEC tSQLt.AssertEqualsTable #Expected, #Results, 'GetEmailsList should return a single record when single record exists'
+	EXEC tSQLt.AssertEqualsTable @Expected =  #Expected,  @Actual = #Results, @Message = 'GetEmailsList should return a single record when single record exists'
 END
 GO
 
@@ -147,15 +147,19 @@ AS
 BEGIN
 	EXEC tSQLt.FakeTable 'Person.Person'
 
-	INSERT INTO Person.Person (FirstName, EmailPromotion)
-		VALUES ('Kenny', 1), ('Frank', 1), ('Joe',1)
+	EXEC tSQLt.FakeTable 'Person.EmailAddress'
+
+	INSERT INTO Person.Person (BusinessEntityID, FirstName, EmailPromotion)
+		VALUES (42, 'Arthur', 1), (1919, 'Jurgen', 1), (1984, 'Winston',1)
+
+	INSERT INTO Person.EmailAddress (BusinessEntityID, EmailAddress)
+		VALUES (42, 'ex@mple.com'), (1919, 'why@mple.com'), (1984,'zee@mple.com')
 
 	CREATE TABLE #Results (
 		FirstName varchar(100),
 		EmailAddress varchar(100)
 	)
 
-	--select *
 	INSERT INTO #Results 
 	EXEC Sales.GetEmailList
 
@@ -167,11 +171,10 @@ BEGIN
 	from #Results
 
 	INSERT INTO #Expected (FirstName, EmailAddress)
-	VALUES ('Kenny', 'ex@mple.com'), ('Frank', 'why@mple.com'), ('Joe','zee@mple.com')
+	VALUES ('Arthur', 'ex@mple.com'), ('Jurgen', 'why@mple.com'), ('Winston','zee@mple.com')
 
-	EXEC tSQLt.AssertEqualsTable #Expected, #Results, 'GetEmailsList should return a single record when single record exists'
+	EXEC tSQLt.AssertEqualsTable #Expected, #Results
 END
 GO
 
 exec tSQLt.Run '[AdventureWorksTests].[Test GetEmailList retrieves several records from the table]'
-
