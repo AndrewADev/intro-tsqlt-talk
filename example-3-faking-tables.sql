@@ -128,7 +128,7 @@ BEGIN
 	from #Results
 
 	INSERT INTO #Expected(FirstName, EmailAddress)
-	VALUES ('Kenny', 'ex@mple.com')
+	VALUES ('Arthur', 'ex@mple.com')
 
 	EXEC tSQLt.AssertEqualsTable @Expected =  #Expected,  @Actual = #Results, @Message = 'GetEmailsList should return a single record when single record exists'
 END
